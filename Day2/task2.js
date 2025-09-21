@@ -2,6 +2,7 @@ const http = require('http');
 const fs = require('fs').promises;
 
 const filePath = './users.json';
+
 async function loadUsers() {
   try {
     const data = await fs.readFile(filePath, 'utf-8');
@@ -16,6 +17,7 @@ async function saveUsers(users) {
 }
 
 const server = http.createServer(async (req, res) => {
+
   const url = req.url;
   const method = req.method;
 
@@ -39,6 +41,7 @@ const server = http.createServer(async (req, res) => {
     }
   }
 
+ 
   else if (url === '/users' && method === 'POST') {
     let body = '';
     req.on('data', chunk => {
@@ -80,6 +83,7 @@ const server = http.createServer(async (req, res) => {
     });
   }
 
+  
   else if (url.startsWith('/users/') && method === 'DELETE') {
     const id = parseInt(url.split('/')[2]);
     let users = await loadUsers();
@@ -94,6 +98,7 @@ const server = http.createServer(async (req, res) => {
       res.end('User not found');
     }
   }
+
 
   else {
     res.writeHead(404, { 'Content-Type': 'text/plain' });
